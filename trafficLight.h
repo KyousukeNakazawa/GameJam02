@@ -1,4 +1,8 @@
 #pragma once
+#include "DxLib.h"
+#include "screen.h"
+#include "math.h"
+
 class TrafficLight
 {
 public:
@@ -12,6 +16,9 @@ public:
 	//信号情報のゲッター
 	float GetRightX() { return rightPosX; }
 	bool GetRightStop() { return rightStop; }
+
+	float GetTopY() { return topPosY; }
+	bool GetTopStop() { return topStop; }
 private:
 	//絵情報
 	int trafficLightGH[2];
@@ -23,6 +30,13 @@ private:
 	float rightPosY;
 	float horizRX;	//横向きに移動する車の信号
 	float horizRY;
+
+	//上からくる車の信号
+	bool topStop;
+	float topPosX;
+	float topPosY;
+	float verticalRX;	//縦向きに移動する車の信号
+	float verticalRY;
 
 	//マウス情報
 	int mouseX;
