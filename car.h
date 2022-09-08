@@ -1,4 +1,5 @@
 #pragma once
+#include <stdlib.h>
 #include "trafficLight.h"
 #include "DxLib.h"
 #include "screen.h"
@@ -10,11 +11,17 @@ public:
 	Car();
 	~Car();
 
+	//リセット処理
+	void Reset();
+
 	//更新処理
-	void Update(int mouseX_, int mouseY_, int mouse_);
+	void Update(int mouseX_, int mouseY_, int mouse_, int& scene);
 
 	//描画
 	void Draw();
+
+	//HPのゲッター
+	int HpGet() { return hp; }
 
 private:
 	//絵情報
@@ -22,36 +29,43 @@ private:
 
 	//情報
 	//車
-	static const int carNum = 10;
+	static const int carNum = 20;
 	const float spdNum = 2.0f;
-	bool rightIsDead[carNum];	//右からくる車の情報
+	//右からくる車の情報
+	bool rightIsDead[carNum];
 	bool rightIsStop[carNum];
 	float rightCarSpd[carNum];
 	float rightPosX[carNum];
 	float rightPosY[carNum];
-	float horizRX;	//横向きに移動する車の情報
+	//横向きに移動する車の情報
+	float horizRX;
 	float horizRY;
-	bool topIsDead[carNum];	//上からくる車の情報
+	//上からくる車の情報
+	bool topIsDead[carNum];
 	bool topIsStop[carNum];
 	float topCarSpd[carNum];
 	float topPosX[carNum];
 	float topPosY[carNum];
+	//縦向きに移動する車
 	float verticalRX;
 	float verticalRY;
 
+	//車線
+	int rightlane;
+	int toplane;
+
 	//スポーンタイマー
-	const int spawnTime = 60 * 5;
+	//2～6秒でランダム
+	const int spawnTime = 60 * (GetRand(4) + 2);
 	int	rightSpawnTimer;
 	int topSpawnTimer;
 
 	//信号情報
 	TrafficLight* trafficLight;
 
-	//マウス情報
-	/*int mouseX;
-	int mouseY;
-	int mouse = 0;
-	int oldMouse;*/
+	//HP
+	const int hpNum = 3;
+	int hp;
 
 	//スポーン処理
 	void Spawn();
@@ -69,5 +83,8 @@ private:
 	bool RightCarStop(int i);
 
 	bool TopCarStop(int i);
+
+	//別車線の当たり判定
+	void CarCollision();
 };
 

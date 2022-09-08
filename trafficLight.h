@@ -9,6 +9,8 @@ public:
 	TrafficLight();
 	~TrafficLight();
 
+	void Reset();
+
 	void Update(int mouseX_, int mouseY_, int mouse_);
 
 	void Draw();

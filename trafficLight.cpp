@@ -25,6 +25,11 @@ TrafficLight::~TrafficLight() {
 
 }
 
+void TrafficLight::Reset() {
+	rightStop = true;
+	topStop = true;
+}
+
 void TrafficLight::Update(int mouseX_, int mouseY_, int mouse_) {
 	oldMouse = mouse;
 	mouse = mouse_;

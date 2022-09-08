@@ -4,7 +4,7 @@
 
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "";
+const char TITLE_[] = "";
 
 
 
@@ -19,7 +19,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
 
 	// タイトルを変更
-	SetMainWindowText(TITLE);
+	SetMainWindowText(TITLE_);
 
 	// 画面サイズの最大サイズ、カラービット数を設定(モニターの解像度に合わせる)
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
@@ -40,8 +40,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// ゲームループで使う変数の宣言
-	Screen screen;
-	Car car;
+	Screen* screen = new Screen;
+	Car* car = new Car;
+
+	int scene = STAGE1;
 
 
 	// 最新のキーボード情報用
@@ -76,14 +78,33 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理
-		screen.Update();
+		switch (scene) {
+		case TITLE:
+			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) scene = STAGE1;
 
-		car.Update(mouseX, mouseY, mouse);
+			DrawFormatString(0, 0, 0xffffff, "title");
+			break;
+		case STAGE1:
+			screen->Update();
 
-		// 描画処理
-		screen.Draw();
+			car->Update(mouseX, mouseY, mouse, scene);
 
-		car.Draw();
+			// 描画処理
+			screen->Draw(car->HpGet());
+
+			car->Draw();
+			break;
+		case END:
+			car->Reset();
+
+			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) scene = TITLE;
+
+			DrawFormatString(0, 0, 0xffffff, "end");
+			break;
+		case LOAD:
+
+			break;
+		}
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
@@ -102,6 +123,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		}
 	}
+
+	if (screen != nullptr) delete screen;
+	if (car != nullptr) delete car;
 	// Dxライブラリ終了処理
 	DxLib_End();
 
