@@ -9,9 +9,9 @@ public:
 	TrafficLight();
 	~TrafficLight();
 
-	void Reset();
+	void Reset(int stage_);
 
-	void Update(int mouseX_, int mouseY_, int mouse_);
+	void Update(int mouseX_, int mouseY_, int mouse_, int scene);
 
 	void Draw();
 
@@ -21,6 +21,12 @@ public:
 
 	float GetTopY() { return topPosY; }
 	bool GetTopStop() { return topStop; }
+
+	float GetLeftX() { return leftPosX; }
+	bool GetLeftStop() { return leftStop; }
+
+	float GetBottomY() { return bottomPosY; }
+	bool GetBottomStop() { return bottomStop; }
 private:
 	//絵情報
 	int trafficLightGH[2];
@@ -30,14 +36,28 @@ private:
 	bool rightStop;
 	float rightPosX;
 	float rightPosY;
-	float horizRX;	//横向きに移動する車の信号
+
+	//左から車の信号
+	bool leftStop;
+	float leftPosX;
+	float leftPosY;
+
+	//横向きに移動する車の信号
+	float horizRX;
 	float horizRY;
 
 	//上からくる車の信号
 	bool topStop;
 	float topPosX;
 	float topPosY;
-	float verticalRX;	//縦向きに移動する車の信号
+
+	//下から車の信号
+	bool bottomStop;
+	float bottomPosX;
+	float bottomPosY;
+
+	//縦向きに移動する車の信号
+	float verticalRX;
 	float verticalRY;
 
 	//マウス情報
@@ -45,6 +65,8 @@ private:
 	int mouseY;
 	int mouse = 0;
 	int oldMouse;
+
+	int scene;
 
 	//信号が変わる処理
 	void Change();

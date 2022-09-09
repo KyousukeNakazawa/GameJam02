@@ -43,7 +43,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Screen* screen = new Screen;
 	Car* car = new Car;
 
-	int scene = STAGE1;
+	int scene = TITLE;
+	int stage = STAGE1;
 
 
 	// 最新のキーボード情報用
@@ -77,25 +78,47 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
 
-		// 更新処理
+		
 		switch (scene) {
 		case TITLE:
-			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) scene = STAGE1;
+			//ステージ選択
+			//上
+			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
+				stage--;
+				if (stage < STAGE1) stage = STAGE2;
+			}
+
+			//下
+			if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN]) {
+				stage++;
+				if (stage > STAGE2) stage = STAGE1;
+			}
+
+			//決定
+			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) {
+				scene = stage;
+				car->Reset(stage);
+			}
 
 			DrawFormatString(0, 0, 0xffffff, "title");
+
+			if(stage == STAGE1) DrawFormatString(0, 15, 0xffffff, "stage1");
+			else if(stage == STAGE2) DrawFormatString(0, 15, 0xffffff, "stage2");
+
 			break;
 		case STAGE1:
+		case STAGE2:
+			// 更新処理
 			screen->Update();
 
 			car->Update(mouseX, mouseY, mouse, scene);
 
 			// 描画処理
-			screen->Draw(car->HpGet());
+			screen->Draw(scene, car->HpGet(), car->TimerGet());
 
 			car->Draw();
 			break;
 		case END:
-			car->Reset();
 
 			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) scene = TITLE;
 

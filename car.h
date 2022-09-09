@@ -12,7 +12,7 @@ public:
 	~Car();
 
 	//リセット処理
-	void Reset();
+	void Reset(int stage);
 
 	//更新処理
 	void Update(int mouseX_, int mouseY_, int mouse_, int& scene);
@@ -20,12 +20,16 @@ public:
 	//描画
 	void Draw();
 
-	//HPのゲッター
+	//ゲッター
+	//HP
 	int HpGet() { return hp; }
+
+	//タイマー
+	int TimerGet() { return gameTimer; }
 
 private:
 	//絵情報
-	int carGH;
+	int carGH[6];
 
 	//情報
 	//車
@@ -37,36 +41,67 @@ private:
 	float rightCarSpd[carNum];
 	float rightPosX[carNum];
 	float rightPosY[carNum];
+	int rightGH[carNum];
+
+	//左から車の情報
+	bool leftIsDead[carNum];
+	bool leftIsStop[carNum];
+	float leftCarSpd[carNum];
+	float leftPosX[carNum];
+	float leftPosY[carNum];
+	int leftGH[carNum];
+
 	//横向きに移動する車の情報
 	float horizRX;
 	float horizRY;
+
 	//上からくる車の情報
 	bool topIsDead[carNum];
 	bool topIsStop[carNum];
 	float topCarSpd[carNum];
 	float topPosX[carNum];
 	float topPosY[carNum];
+	int topGH[carNum];
+
+	//下から車の情報
+	bool bottomIsDead[carNum];
+	bool bottomIsStop[carNum];
+	float bottomCarSpd[carNum];
+	float bottomPosX[carNum];
+	float bottomPosY[carNum];
+	int bottomGH[carNum];
+
 	//縦向きに移動する車
 	float verticalRX;
 	float verticalRY;
 
-	//車線
+	//車線情報
 	int rightlane;
 	int toplane;
+	int bottomlane;
+
+	//信号情報
+	TrafficLight* trafficLight;
 
 	//スポーンタイマー
 	//2～6秒でランダム
 	const int spawnTime = 60 * (GetRand(4) + 2);
 	int	rightSpawnTimer;
 	int topSpawnTimer;
+	int leftSpawnTimer;
+	int bottomSpawnTimer;
 
-	//信号情報
-	TrafficLight* trafficLight;
+	//ゲームタイマー
+	const int gameTime = 60 * 30;
+	int gameTimer;
 
 	//HP
 	const int hpNum = 3;
 	int hp;
 
+	int scene;
+
+	//関数
 	//スポーン処理
 	void Spawn();
 
@@ -84,7 +119,13 @@ private:
 
 	bool TopCarStop(int i);
 
+	bool LeftCarStop(int i);
+
+	bool BottomCarStop(int i);
+
 	//別車線の当たり判定
 	void CarCollision();
+
+	void Collision(const float posX1[], const float posY1[], const float posX2[], const float posY2[], bool isDead1[], bool isDead2[]);
 };
 

@@ -28,19 +28,31 @@ public:
 
 	void Update();
 
-	void Draw(int hp);
+	void Draw(int scene, int hp, int timer);
 
 private:
 	//背景情報
 	int backX;
 	int backY;
 	int stageGH1;
+	int stageGH2;
 
-	//HP UI情報
+	//UI情報
+	//HP
 	int hpGHX;
 	int hpGHY;
 	AniGHTimer hpEffect{ 8, 40, 0 };
 	int hpGH[8];
 
+	//タイマー 
+	int timerGHX;
+	int timerGHY;
+	int timerGH[10];
+	const int timerDigits = 2;
+	char timerStrNum[3];
+	int timerEachNum[3];
+
 	void HpUI(int hp);
+
+	void TimerUI(int timer);
 };
