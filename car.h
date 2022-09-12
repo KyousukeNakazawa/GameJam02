@@ -31,6 +31,10 @@ private:
 	//絵情報
 	int carGH[6];
 
+	//サウンド情報
+	//車の衝突SE
+	int carCrashSE;
+
 	//情報
 	//車
 	static const int carNum = 20;
@@ -92,7 +96,7 @@ private:
 	int bottomSpawnTimer;
 
 	//ゲームタイマー
-	const int gameTime = 60 * 30;
+	const int gameTime = 60 * 60;
 	int gameTimer;
 
 	//HP

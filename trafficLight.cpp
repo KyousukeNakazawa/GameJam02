@@ -6,7 +6,10 @@ enum trafficLight {
 };
 
 TrafficLight::TrafficLight() {
-	LoadDivGraph("Resource/trafficLightGH.png", 2, 1, 2, 32, 64, trafficLightGH);
+	LoadDivGraph("Resource/pict/trafficLightGH.png", 2, 1, 2, 32, 64, trafficLightGH);
+
+	changeSE = LoadSoundMem("Resource/sound/changeSE.mp3");
+	ChangeVolumeSoundMem(100, changeSE);
 
 	rightStop = true;
 	rightPosX = WIN_WIDTH / 2 + 100;
@@ -98,6 +101,7 @@ void TrafficLight::Change() {
 	
 	if (oldMouse == 0 && mouse == 1 && mouseX < right1 && mouseX > left1 && mouseY >top1 && mouseY < bottom1) {
 		rightStop = !rightStop;
+		PlaySoundMem(changeSE, DX_PLAYTYPE_BACK, true);
 	}
 
 	//ã‚©‚ç‚­‚éŽÔ‚ÌM†
@@ -108,6 +112,7 @@ void TrafficLight::Change() {
 	
 	if (oldMouse == 0 && mouse == 1 && mouseX < right2 && mouseX > left2 && mouseY > top2 && mouseY < bottom2) {
 		topStop = !topStop;
+		PlaySoundMem(changeSE, DX_PLAYTYPE_BACK, true);
 	}
 
 	//¶‚©‚ç‚­‚éŽÔ‚ÌM†
@@ -118,6 +123,7 @@ void TrafficLight::Change() {
 
 	if (oldMouse == 0 && mouse == 1 && mouseX < right3 && mouseX > left3 && mouseY > top3 && mouseY < bottom3) {
 		leftStop = !leftStop;
+		PlaySoundMem(changeSE, DX_PLAYTYPE_BACK, true);
 	}
 
 	//‰º‚©‚ç‚­‚éŽÔ‚ÌM†
@@ -128,5 +134,6 @@ void TrafficLight::Change() {
 
 	if (oldMouse == 0 && mouse == 1 && mouseX < right4 && mouseX > left4 && mouseY > top4 && mouseY < bottom4) {
 		bottomStop = !bottomStop;
+		PlaySoundMem(changeSE, DX_PLAYTYPE_BACK, true);
 	}
 }

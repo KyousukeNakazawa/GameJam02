@@ -3,7 +3,10 @@
 
 Car::Car() {
 	trafficLight = new TrafficLight;
-	LoadDivGraph("Resource/carGH.png", 6, 3, 2, 32, 64, carGH);
+	LoadDivGraph("Resource/pict/carGH.png", 6, 3, 2, 32, 64, carGH);
+
+	carCrashSE = LoadSoundMem("Resource/sound/carCrashSE.mp3");
+	ChangeVolumeSoundMem(100, carCrashSE);
 
 	hp = hpNum;
 	gameTimer = gameTime;
@@ -157,6 +160,10 @@ void Car::Spawn() {
 					rightPosY[i] = WIN_HEIGHT / 2 + 40;
 				}
 				rightIsDead[i] = false;
+
+				//スポーン場所に車がいた場合涌かない
+				if (RightCarStop(i)) rightIsDead[i] = true;
+
 				//描画する車両をランダムで決定
 				rightGH[i] = carGH[GetRand(5)];
 				break;
@@ -183,6 +190,10 @@ void Car::Spawn() {
 				}
 				topPosY[i] = -verticalRY;
 				topIsDead[i] = false;
+
+				//スポーン場所に車がいた場合涌かない
+				if (TopCarStop(i)) topIsDead[i] = true;
+
 				//描画する車両をランダムで決定
 				topGH[i] = carGH[GetRand(5)];
 				break;
@@ -200,6 +211,10 @@ void Car::Spawn() {
 					leftPosX[i] = -horizRX;
 					leftPosY[i] = WIN_HEIGHT / 2 - 40;
 					leftIsDead[i] = false;
+
+					//スポーン場所に車がいた場合涌かない
+					if (LeftCarStop(i)) leftIsDead[i] = true;
+
 					//描画する車両をランダムで決定
 					leftGH[i] = carGH[GetRand(5)];
 					break;
@@ -218,6 +233,10 @@ void Car::Spawn() {
 					else bottomPosX[i] = WIN_WIDTH / 3 - 140;
 					bottomPosY[i] = WIN_HEIGHT + verticalRY;
 					bottomIsDead[i] = false;
+
+					//スポーン場所に車がいた場合涌かない
+					if (BottomCarStop(i)) bottomIsDead[i] = true;
+
 					//描画する車両をランダムで決定
 					bottomGH[i] = carGH[GetRand(5)];
 					break;
@@ -240,15 +259,16 @@ void Car::Stop() {
 			&& RightCarStop(i)) {
 			rightCarSpd[i] = spdNum;
 		}
-		//信号が赤で前に車がいる場合
-		else if (trafficLight->GetRightStop() && RightCarStop(i)) {
-			rightCarSpd[i] = 0;
-		}
 		//信号が赤で前に車がいない場合
 		else if (rightPosX[i] >= trafficLight->GetRightX() + 14 && rightPosX[i] <= trafficLight->GetRightX() + 30
 			&& trafficLight->GetRightStop() && !RightCarStop(i)) {
 			rightCarSpd[i] = 0;
 		}
+		//信号が赤で前に車がいる場合
+		else if (trafficLight->GetRightStop() && RightCarStop(i)) {
+			rightCarSpd[i] = 0;
+		}
+		
 		else {
 			rightCarSpd[i] = spdNum;
 		}
@@ -505,6 +525,8 @@ void Car::Collision(const float posX1[], const float posY1[], const float posX2[
 						isDead1[i] = true;
 						isDead2[j] = true;
 						hp--;
+						//SE
+						PlaySoundMem(carCrashSE, DX_PLAYTYPE_BACK, true);
 					}
 				}
 			}

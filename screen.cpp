@@ -5,19 +5,19 @@ Screen::Screen() {
 	//背景情報
 	backX = 0;
 	backY = 0;
-	stageGH1 = LoadGraph("Resource/stage1.png");
-	stageGH2 = LoadGraph("Resource/stage2.png");
+	stageGH1 = LoadGraph("Resource/pict/stage1.png");
+	stageGH2 = LoadGraph("Resource/pict/stage2.png");
 
 	//UI情報
 	//HP
 	hpGHX = 10;
 	hpGHY = 10;
-	LoadDivGraph("Resource/hp.png", 8, 8, 1, 32, 32, hpGH);
+	LoadDivGraph("Resource/pict/hp.png", 8, 8, 1, 32, 32, hpGH);
 
 	//タイマー
 	timerGHX = WIN_WIDTH - 106;
 	timerGHY = 10;
-	LoadDivGraph("resource/timenum.png", 10, 10, 1, 48, 48, timerGH);
+	LoadDivGraph("resource/pict/timenum.png", 10, 10, 1, 48, 48, timerGH);
 }
 
 Screen::~Screen() {

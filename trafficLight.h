@@ -31,6 +31,10 @@ private:
 	//絵情報
 	int trafficLightGH[2];
 
+	//サウンド情報
+	//信号をクリックしたときの音
+	int changeSE;
+
 	//情報
 	//右からくる車の信号
 	bool rightStop;
