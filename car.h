@@ -100,7 +100,7 @@ private:
 	int bottomSpawnTimer;
 
 	//ゲームタイマー
-	const int gameTime = 60 * 40;
+	const int gameTime = 60 * 60;
 	int gameTimer;
 
 	//HP

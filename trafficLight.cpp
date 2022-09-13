@@ -81,8 +81,8 @@ void TrafficLight::Draw() {
 
 	if (scene == STAGE2) {
 		//ç∂Ç©ÇÁé‘ÇÃêMçÜ
-		if (leftStop) DrawRotaGraph(leftPosX, leftPosY, 1.0, 0, trafficLightGH[Red_], true, true);
-		else DrawRotaGraph(leftPosX, leftPosY, 1.0, 0, trafficLightGH[blue_], true, true);
+		if (leftStop) DrawRotaGraph(leftPosX, leftPosY, 1.0, Radian(180), trafficLightGH[Red_], true, true);
+		else DrawRotaGraph(leftPosX, leftPosY, 1.0, Radian(180), trafficLightGH[blue_], true, true);
 
 		//â∫Ç©ÇÁé‘ÇÃêMçÜ
 		if (bottomStop) DrawRotaGraph(bottomPosX, bottomPosY, 1.0, Radian(-90), trafficLightGH[Red_], true, false);

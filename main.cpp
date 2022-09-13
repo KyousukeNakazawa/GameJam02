@@ -48,12 +48,20 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int decisionSE = LoadSoundMem("Resource/sound/decisionSE.mp3");
 	ChangeVolumeSoundMem(150, decisionSE);
 
+	//ゲーム説明
+	int optionGH = LoadGraph("Resource/pict/operation.png");
+
+	//タイトル
+	int title1GH = LoadGraph("Resource/pict/title1.png");
+	int title2GH = LoadGraph("Resource/pict/title2.png");
+	int title3GH = LoadGraph("Resource/pict/title3.png");
+
 	// ゲームループで使う変数の宣言
 	Screen* screen = new Screen;
 	Car* car = new Car;
 
 	int scene = TITLE;
-	int stage = STAGE1;
+	int stage = EXPLANATION;
 
 
 	// 最新のキーボード情報用
@@ -91,6 +99,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		switch (scene) {
 		case TITLE:
 			StopSoundMem(gameBGM);
+			StopSoundMem(endBGM);
+
 			//BGM
 			if (!CheckSoundMem(titleBGM)) {
 				PlaySoundMem(titleBGM, DX_PLAYTYPE_LOOP, true);
@@ -100,14 +110,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//上
 			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
 				stage--;
-				if (stage < STAGE1) stage = STAGE2;
+				if (stage < EXPLANATION) stage = STAGE2;
 				PlaySoundMem(selectSE, DX_PLAYTYPE_BACK, true);
 			}
 
 			//下
 			if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN]) {
 				stage++;
-				if (stage > STAGE2) stage = STAGE1;
+				if (stage > STAGE2) stage = EXPLANATION;
 				PlaySoundMem(selectSE, DX_PLAYTYPE_BACK, true);
 			}
 
@@ -116,17 +126,42 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				PlaySoundMem(decisionSE, DX_PLAYTYPE_BACK, true);
 				scene = stage;
 				car->Reset(stage);
-				StopSoundMem(titleBGM);
 			}
 
-			DrawFormatString(0, 0, 0xffffff, "title");
+			//DrawFormatString(0, 0, 0xffffff, "title");
 
-			if(stage == STAGE1) DrawFormatString(0, 15, 0xffffff, "stage1");
-			else if(stage == STAGE2) DrawFormatString(0, 15, 0xffffff, "stage2");
+			if (stage == EXPLANATION) {
+				DrawGraph(0, 0, title1GH, true);
+				//DrawFormatString(0, 15, 0xffffff, "stage1");
+			}
+			else if (stage == STAGE1) {
+				//DrawFormatString(0, 15, 0xffffff, "stage2");
+				DrawGraph(0, 0, title2GH, true);
+			}
+			else if (stage == STAGE2) {
+				//DrawFormatString(0, 15, 0xffffff, "exp");
+				DrawGraph(0, 0, title3GH, true);
+			}
+
+			break;
+		case EXPLANATION:
+
+			//決定
+			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) {
+				PlaySoundMem(decisionSE, DX_PLAYTYPE_BACK, true);
+				scene = TITLE;
+			}
+
+			//背景
+			DrawGraph(0, 0, optionGH, true);
+
+			DrawFormatString(0, 0, 0xffffff, "exp");
 
 			break;
 		case STAGE1:
 		case STAGE2:
+			StopSoundMem(titleBGM);
+
 			//BGM
 			if (!CheckSoundMem(gameBGM)) {
 				PlaySoundMem(gameBGM, DX_PLAYTYPE_LOOP, true);
@@ -153,15 +188,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) {
 				PlaySoundMem(decisionSE, DX_PLAYTYPE_BACK, true);
 				scene = TITLE;
-				StopSoundMem(endBGM);
 			}
 
 			//DrawFormatString(0, 0, 0xffffff, "end");
 
 			screen->Score(stage, car->ScoreGet());
-			break;
-		case LOAD:
-
 			break;
 		}
 

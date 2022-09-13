@@ -8,10 +8,10 @@ const int WIN_HEIGHT = 720;
 
 enum Scene {
 	TITLE,
+	EXPLANATION,
 	STAGE1,
 	STAGE2,
 	END,
-	LOAD,
 };
 
 //アニメーション用

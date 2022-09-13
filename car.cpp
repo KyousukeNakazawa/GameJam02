@@ -145,8 +145,8 @@ void Car::Draw() {
 	//M†
 	trafficLight->Draw();
 
-	DrawFormatString(0, 0, 0x00ffff, "%d", rightSpawnTimer);
-	DrawFormatString(0, 15, 0x00ffff, "%d", topSpawnTimer);
+	/*DrawFormatString(0, 0, 0x00ffff, "%d", rightSpawnTimer);
+	DrawFormatString(0, 15, 0x00ffff, "%d", topSpawnTimer);*/
 }
 
 void Car::Spawn() {
