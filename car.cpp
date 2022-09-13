@@ -6,10 +6,15 @@ Car::Car() {
 	LoadDivGraph("Resource/pict/carGH.png", 6, 3, 2, 32, 64, carGH);
 
 	carCrashSE = LoadSoundMem("Resource/sound/carCrashSE.mp3");
-	ChangeVolumeSoundMem(100, carCrashSE);
+	ChangeVolumeSoundMem(150, carCrashSE);
+
+	pointSE = LoadSoundMem("Resource/sound/pointSE.mp3");
+	ChangeVolumeSoundMem(125, pointSE);
 
 	hp = hpNum;
 	gameTimer = gameTime;
+
+	score = 0;
 
 	horizRX = 32;
 	horizRY = 16;
@@ -56,6 +61,8 @@ void Car::Reset(int stage) {
 	trafficLight->Reset(stage);
 	hp = hpNum;
 	gameTimer = gameTime;
+
+	score = 0;
 
 	rightSpawnTimer = 60 * (GetRand(15) % 3 + 2);
 	topSpawnTimer = 60 * (GetRand(10) % 3 + 2);
@@ -376,23 +383,39 @@ void Car::Range() {
 		//右からくる車
 		if (!rightIsDead[i] && rightPosX[i] < -horizRX) {
 			rightIsDead[i] = true;
+			score++;
+			//SE
+			PlaySoundMem(pointSE, DX_PLAYTYPE_BACK, true);
+			
 		}
 		//上からくる車
 		if (!topIsDead[i] && topPosY[i] > WIN_HEIGHT + verticalRY) {
 			topIsDead[i] = true;
+			score++;
+			//SE
+			PlaySoundMem(pointSE, DX_PLAYTYPE_BACK, true);
 		}
 
 		if (scene == STAGE2) {
 			//左からくる車
 			if (!leftIsDead[i] && leftPosX[i] > WIN_WIDTH + verticalRX) {
 				leftIsDead[i] = true;
+				score++;
+				//SE
+				PlaySoundMem(pointSE, DX_PLAYTYPE_BACK, true);
 			}
 			//下からくる車
 			if (!bottomIsDead[i] && bottomPosY[i] < -verticalRY) {
 				bottomIsDead[i] = true;
+				score++;
+				//SE
+				PlaySoundMem(pointSE, DX_PLAYTYPE_BACK, true);
 			}
 		}
 	}
+
+	//スコア上限 99
+	if (score >= 99) score = 99;
 }
 
 bool Car::RightCarStop(int i) {

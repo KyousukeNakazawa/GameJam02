@@ -4,7 +4,7 @@
 
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE_[] = "";
+const char TITLE_[] = "交通整理";
 
 
 
@@ -28,7 +28,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetWindowSizeExtendRate(1.0);
 
 	// 画面の背景色を設定する
-	SetBackgroundColor(0x00, 0x00, 0x00);
+	SetBackgroundColor(0x00, 0x00, 0xff);
 
 	// DXlibの初期化
 	if (DxLib_Init() == -1) { return -1; }
@@ -37,7 +37,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	// 画像などのリソースデータの変数宣言と読み込み
-
+	int titleBGM = LoadSoundMem("Resource/sound/titleBGM.mp3");
+	ChangeVolumeSoundMem(100, titleBGM);
+	int gameBGM = LoadSoundMem("Resource/sound/gameBGM.mp3");
+	ChangeVolumeSoundMem(100, gameBGM);
+	int endBGM = LoadSoundMem("Resource/sound/endBGM.mp3");
+	ChangeVolumeSoundMem(100, endBGM);
+	int selectSE = LoadSoundMem("Resource/sound/selectSE.mp3");
+	ChangeVolumeSoundMem(150, selectSE);
+	int decisionSE = LoadSoundMem("Resource/sound/decisionSE.mp3");
+	ChangeVolumeSoundMem(150, decisionSE);
 
 	// ゲームループで使う変数の宣言
 	Screen* screen = new Screen;
@@ -81,23 +90,33 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		
 		switch (scene) {
 		case TITLE:
+			StopSoundMem(gameBGM);
+			//BGM
+			if (!CheckSoundMem(titleBGM)) {
+				PlaySoundMem(titleBGM, DX_PLAYTYPE_LOOP, true);
+			}
+
 			//ステージ選択
 			//上
 			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
 				stage--;
 				if (stage < STAGE1) stage = STAGE2;
+				PlaySoundMem(selectSE, DX_PLAYTYPE_BACK, true);
 			}
 
 			//下
 			if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN]) {
 				stage++;
 				if (stage > STAGE2) stage = STAGE1;
+				PlaySoundMem(selectSE, DX_PLAYTYPE_BACK, true);
 			}
 
 			//決定
 			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) {
+				PlaySoundMem(decisionSE, DX_PLAYTYPE_BACK, true);
 				scene = stage;
 				car->Reset(stage);
+				StopSoundMem(titleBGM);
 			}
 
 			DrawFormatString(0, 0, 0xffffff, "title");
@@ -108,6 +127,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case STAGE1:
 		case STAGE2:
+			//BGM
+			if (!CheckSoundMem(gameBGM)) {
+				PlaySoundMem(gameBGM, DX_PLAYTYPE_LOOP, true);
+			}
+
 			// 更新処理
 			screen->Update();
 
@@ -119,10 +143,22 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			car->Draw();
 			break;
 		case END:
+			StopSoundMem(gameBGM);
 
-			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) scene = TITLE;
+			//BGM
+			if (!CheckSoundMem(endBGM)) {
+				PlaySoundMem(endBGM, DX_PLAYTYPE_LOOP, true);
+			}
 
-			DrawFormatString(0, 0, 0xffffff, "end");
+			if (keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE]) {
+				PlaySoundMem(decisionSE, DX_PLAYTYPE_BACK, true);
+				scene = TITLE;
+				StopSoundMem(endBGM);
+			}
+
+			//DrawFormatString(0, 0, 0xffffff, "end");
+
+			screen->Score(stage, car->ScoreGet());
 			break;
 		case LOAD:
 

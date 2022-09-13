@@ -30,12 +30,17 @@ public:
 
 	void Draw(int scene, int hp, int timer);
 
+	void Score(int stage, int score);
+
 private:
 	//背景情報
 	int backX;
 	int backY;
 	int stageGH1;
 	int stageGH2;
+
+	int stageEndGH1;
+	int stageEndGH2;
 
 	//UI情報
 	//HP
@@ -51,6 +56,15 @@ private:
 	const int timerDigits = 2;
 	char timerStrNum[3];
 	int timerEachNum[3];
+
+	//スコア
+	//タイマー 
+	int scoreGHX;
+	int scoreGHY;
+	int scoreGH[10];
+	const int scoreDigits = 2;
+	char scoreStrNum[3];
+	int scoreEachNum[3];
 
 	void HpUI(int hp);
 

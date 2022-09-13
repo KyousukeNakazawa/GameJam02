@@ -9,7 +9,7 @@ TrafficLight::TrafficLight() {
 	LoadDivGraph("Resource/pict/trafficLightGH.png", 2, 1, 2, 32, 64, trafficLightGH);
 
 	changeSE = LoadSoundMem("Resource/sound/changeSE.mp3");
-	ChangeVolumeSoundMem(100, changeSE);
+	ChangeVolumeSoundMem(150, changeSE);
 
 	rightStop = true;
 	rightPosX = WIN_WIDTH / 2 + 100;

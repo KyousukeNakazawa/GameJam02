@@ -27,6 +27,8 @@ public:
 	//タイマー
 	int TimerGet() { return gameTimer; }
 
+	int ScoreGet() { return score; }
+
 private:
 	//絵情報
 	int carGH[6];
@@ -34,6 +36,8 @@ private:
 	//サウンド情報
 	//車の衝突SE
 	int carCrashSE;
+
+	int pointSE;
 
 	//情報
 	//車
@@ -96,14 +100,18 @@ private:
 	int bottomSpawnTimer;
 
 	//ゲームタイマー
-	const int gameTime = 60 * 60;
+	const int gameTime = 60 * 40;
 	int gameTimer;
 
 	//HP
 	const int hpNum = 3;
 	int hp;
 
+	//現在のシーン格納用
 	int scene;
+
+	//スコア
+	int score;
 
 	//関数
 	//スポーン処理
